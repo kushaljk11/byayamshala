@@ -1,8 +1,9 @@
 "use client";
 
-import { animate, useInView, useReducedMotion } from "motion/react";
+import { animate, useInView } from "motion/react";
 import { useEffect, useRef } from "react";
 import { EASE_OUT } from "@/lib/motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 function parse(value: string) {
   const match = value.match(/^(d[d,]*(?:.d+)?)(.*)$/);
@@ -16,7 +17,8 @@ function parse(value: string) {
   return {
     target,
     format: (n: number) => {
-      if (padded) return String(Math.round(n)).padStart(raw.length, "0") + suffix;
+      if (padded)
+        return String(Math.round(n)).padStart(raw.length, "0") + suffix;
       const text = grouped
         ? Math.round(n).toLocaleString("en-US")
         : n.toFixed(decimals);
@@ -33,7 +35,7 @@ function parse(value: string) {
 export function CountUp({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
   const parsed = parse(value);
   const animated = Boolean(parsed) && !reduceMotion;
 

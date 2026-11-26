@@ -4,12 +4,12 @@ import {
   motion,
   useMotionTemplate,
   useMotionValue,
-  useReducedMotion,
   useSpring,
   useTransform,
 } from "motion/react";
 import { useRef, type PointerEvent, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const SPRING = { stiffness: 220, damping: 22, mass: 0.6 };
 const MAX_TILT = 9; // degrees
@@ -26,7 +26,7 @@ export function TiltCard({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
 
   // Pointer position, 0..1 across the card
   const px = useMotionValue(0.5);

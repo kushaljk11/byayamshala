@@ -137,3 +137,61 @@ html.lenis body {
     background: var(--color-primary);
   }
 }
+
+/* Brand-coloured text selection */
+::selection {
+  background: rgb(1 158 225 / 0.22);
+  color: inherit;
+}
+
+/* Opening intro: hidden unless the boot script chose to play it (no-JS safe). */
+.intro-overlay {
+  display: none;
+}
+html[data-intro-played="1"] .intro-overlay {
+  display: flex;
+}
+
+/*
+ * Intro, part 1 — pure CSS so it starts at first paint, before JavaScript loads.
+ *   0.10–0.70s  the B mark lifts in (bottom-up reveal + rise)
+ *   0.70–1.25s  it slides left while the wordmark unrolls
+ *   0.20–1.45s  the loading line fills
+ * Part 2 (the shutter lift) is driven by components/intro/Intro.tsx.
+ */
+@keyframes intro-lift-clip {
+  from { clip-path: inset(100% 0 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes intro-lift-rise {
+  from { transform: translateY(28%); }
+  to { transform: translateY(0); }
+}
+@keyframes intro-unroll {
+  from { clip-path: inset(0 72.5% 0 4%); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes intro-track {
+  from { transform: translateX(34%); }
+  to { transform: translateX(0); }
+}
+@keyframes intro-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.intro-track {
+  animation: intro-track 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.7s both;
+}
+.intro-unroll {
+  animation: intro-unroll 0.55s cubic-bezier(0.65, 0, 0.35, 1) 0.7s both;
+}
+.intro-lift {
+  animation: intro-lift-clip 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+.intro-rise {
+  animation: intro-lift-rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+.intro-progress {
+  transform-origin: left;
+  animation: intro-progress 1.25s cubic-bezier(0.33, 0, 0.2, 1) 0.2s both;
+}

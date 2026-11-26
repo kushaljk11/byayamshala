@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
  * Oversized line of type that pins to the screen while the visitor scrolls
@@ -14,7 +15,7 @@ export function ScrollTextBand({ text }: { text: string }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
   // How far (px) the line must travel so its last word reaches the right edge.
   const [distance, setDistance] = useState(0);
 
@@ -22,7 +23,8 @@ export function ScrollTextBand({ text }: { text: string }) {
     const viewport = viewportRef.current;
     const line = textRef.current;
     if (!viewport || !line) return;
-    const measure = () => setDistance(Math.max(0, line.scrollWidth - viewport.clientWidth));
+    const measure = () =>
+      setDistance(Math.max(0, line.scrollWidth - viewport.clientWidth));
     const observer = new ResizeObserver(measure);
     observer.observe(viewport);
     observer.observe(line);

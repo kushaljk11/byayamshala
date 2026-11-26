@@ -19,6 +19,8 @@ import {
   whatsappLink,
 } from "@/constants/site";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { useSectionHref } from "@/hooks/useSectionHref";
+import { useIntroDone } from "@/components/intro/introStore";
 import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import type { NavItem } from "@/types";
@@ -54,8 +56,9 @@ function Chevron({ className }: { className?: string }) {
 }
 
 function Logo({ compact }: { compact: boolean }) {
+  const toHref = useSectionHref();
   return (
-    <a href="#home" aria-label={`${siteConfig.name} home`} className="shrink-0">
+    <a href={toHref("#home")} aria-label={`${siteConfig.name} home`} className="shrink-0">
       {/* Figma frame 278×80 with a cropped fill of the 2172×724 logo */}
       <CroppedImage
         src="/images/logo.png"
@@ -73,6 +76,8 @@ function Logo({ compact }: { compact: boolean }) {
 }
 
 export function Header() {
+  const introDone = useIntroDone();
+  const toHref = useSectionHref();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -108,7 +113,7 @@ export function Header() {
       // Opacity only: a transform here would make the fixed mobile menu
       // position itself against the header instead of the viewport.
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      animate={{ opacity: introDone ? 1 : 0 }}
       transition={{ duration: 0.8, ease: EASE_OUT, delay: 0.1 }}
       className="pointer-events-none fixed inset-x-0 top-0 z-50"
     >
@@ -155,7 +160,7 @@ export function Header() {
 
           <div className="flex items-center gap-1.5">
             <a
-              href="#login"
+              href={toHref("#login")}
               className="hidden rounded-full px-4 py-2.5 text-[14px] font-medium text-white/80 transition-colors hover:text-white sm:block"
             >
               Login
@@ -214,6 +219,7 @@ function DesktopItem({
   hovered: boolean;
   onHover: () => void;
 }) {
+  const toHref = useSectionHref();
   const label = (
     <>
       {/* Sliding pills: one marks the section in view, one follows the pointer */}
@@ -247,7 +253,7 @@ function DesktopItem({
     return (
       <li onMouseEnter={onHover}>
         <a
-          href={item.href}
+          href={toHref(item.href)}
           aria-current={active ? "true" : undefined}
           className={itemClass}
         >
@@ -268,7 +274,7 @@ function DesktopItem({
           {item.children.map((child) => (
             <li key={child.label}>
               <a
-                href={child.href}
+                href={toHref(child.href)}
                 className="group/link flex items-center justify-between gap-3 rounded-xl px-3.5 py-3 transition-colors hover:bg-white/[0.06]"
               >
                 <span>
@@ -300,6 +306,7 @@ function MobileMenu({
   activeNav: string | null;
   onClose: () => void;
 }) {
+  const toHref = useSectionHref();
   const [expanded, setExpanded] = useState<string | null>(null);
 
   return (
@@ -393,7 +400,7 @@ function MobileMenu({
                             {item.children.map((child) => (
                               <li key={child.label}>
                                 <a
-                                  href={child.href}
+                                  href={toHref(child.href)}
                                   onClick={onClose}
                                   className="block py-2.5 last:pb-5"
                                 >
@@ -414,7 +421,7 @@ function MobileMenu({
                     </>
                   ) : (
                     <a
-                      href={item.href}
+                      href={toHref(item.href)}
                       onClick={onClose}
                       aria-current={active ? "true" : undefined}
                       className="flex items-center justify-between py-4"
@@ -435,7 +442,7 @@ function MobileMenu({
           >
             <div className="grid grid-cols-2 gap-3">
               <a
-                href="#login"
+                href={toHref("#login")}
                 onClick={onClose}
                 className="flex h-12 items-center justify-center rounded-full border border-white/20 text-[15px] font-semibold text-white"
               >

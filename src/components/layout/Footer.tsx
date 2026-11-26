@@ -7,6 +7,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { ArrowIcon, buttonClasses, Container, CroppedImage } from "@/components/ui";
 import { footerColumns, siteConfig, socialLinks, whatsappLink } from "@/constants/site";
+import { useSectionHref } from "@/hooks/useSectionHref";
 import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +23,7 @@ const contactLink =
  * - oversized wordmark as a calm brand sign-off
  */
 export function Footer() {
+  const toHref = useSectionHref();
   const ref = useRef<HTMLElement>(null);
   const lenis = useLenis();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
@@ -74,7 +76,7 @@ export function Footer() {
           className="grid grid-cols-2 gap-x-6 gap-y-10 py-14 md:py-16 md:grid-cols-4 lg:grid-cols-[minmax(0,1.5fr)_repeat(2,minmax(0,1fr))_repeat(2,minmax(0,1.3fr))] lg:gap-8"
         >
           <RevealItem className="col-span-2 md:col-span-4 lg:col-span-1">
-            <a href="#home" aria-label={`${siteConfig.name} home`} className="inline-block">
+            <a href={toHref("#home")} aria-label={`${siteConfig.name} home`} className="inline-block">
               <CroppedImage
                 src="/images/logo.png"
                 alt={siteConfig.name}
@@ -110,7 +112,7 @@ export function Footer() {
                 {col.links.map((link) => (
                   <li key={link.label}>
                     <a
-                      href={link.href}
+                      href={toHref(link.href)}
                       className="group/link inline-flex items-center py-1 text-[15px] text-white/80 transition-colors hover:text-white"
                     >
                       <span className="h-px w-0 bg-primary transition-[width,margin] duration-300 ease-out-expo group-hover/link:mr-2 group-hover/link:w-3" />

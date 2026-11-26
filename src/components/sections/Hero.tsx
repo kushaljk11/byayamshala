@@ -7,16 +7,19 @@ import { ArrowIcon, buttonClasses, Container } from "@/components/ui";
 import { siteConfig, whatsappLink } from "@/constants/site";
 import { EASE_OUT } from "@/lib/motion";
 import { HeroMedia } from "./HeroMedia";
+import { useIntroDone } from "@/components/intro/introStore";
 
 const headline = siteConfig.tagline.split(" ");
 
-const fadeUp = (delay: number) => ({
+// Entrances wait for the opening intro (if it plays) so they land as it lifts away.
+const fadeUp = (delay: number, go: boolean) => ({
   initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
+  animate: go ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 },
   transition: { duration: 0.9, ease: EASE_OUT, delay },
 });
 
 export function Hero() {
+  const go = useIntroDone();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   // Media drifts slower than the page; copy lifts away and fades.
@@ -33,9 +36,9 @@ export function Hero() {
       {/* Background media: video when provided, otherwise the poster image */}
       <motion.div style={{ y: mediaY }} className="absolute inset-0 -z-20">
         <motion.div
-          initial={{ scale: 1.08 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2.4, ease: EASE_OUT }}
+          initial={{ scale: 1.14 }}
+          animate={{ scale: go ? 1 : 1.14 }}
+          transition={{ duration: 2.2, ease: EASE_OUT }}
           className="relative size-full"
         >
           <HeroMedia />
@@ -50,7 +53,7 @@ export function Hero() {
         <Container className="pb-16 pt-32 md:pb-24 2xl:pb-28">
           <div className="max-w-[640px] text-white">
             <motion.p
-              {...fadeUp(0.3)}
+              {...fadeUp(0.3, go)}
               className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-sm font-medium ring-1 ring-white/15 backdrop-blur-md md:text-[15px]"
             >
               <Image src="/icons/star.svg" alt="" width={24.1688} height={23.0454} className="h-4 w-[17px]" />
@@ -65,7 +68,7 @@ export function Hero() {
                     <motion.span
                       className="inline-block"
                       initial={{ y: "110%" }}
-                      animate={{ y: 0 }}
+                      animate={{ y: go ? 0 : "110%" }}
                       transition={{ duration: 1, ease: EASE_OUT, delay: 0.45 + i * 0.06 }}
                     >
                       {word}&nbsp;
@@ -75,12 +78,12 @@ export function Hero() {
               </span>
             </h1>
 
-            <motion.p {...fadeUp(0.9)} className="mt-4 max-w-[500px] text-lead text-white/85">
+            <motion.p {...fadeUp(0.9, go)} className="mt-4 max-w-[500px] text-lead text-white/85">
               Personal training, group classes and nutrition coaching at our Itahari
               gym, or live online wherever you are.
             </motion.p>
 
-            <motion.div {...fadeUp(1)} className="mt-8 flex flex-wrap gap-3">
+            <motion.div {...fadeUp(1, go)} className="mt-8 flex flex-wrap gap-3">
               <a
                 href={whatsappLink()}
                 target="_blank"

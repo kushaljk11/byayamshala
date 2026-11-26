@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Roboto } from "next/font/google";
 import { Footer, Header } from "@/components/layout";
 import { Providers } from "@/components/motion/Providers";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
+import { introBootScript } from "@/components/intro/introBoot";
 import { siteConfig, socialLinks } from "@/constants/site";
 import "./globals.css";
 
@@ -18,11 +20,18 @@ const roboto = Roboto({
   weight: ["400", "500"],
 });
 
+/** Link preview image (WhatsApp, Facebook, X, Google): a frame of the hero film + logo. */
 const shareImage = {
-  url: "/images/hero-bg.png",
-  width: 1629,
-  height: 965,
-  alt: "Member training with battle ropes at Byayamshala gym, Itahari",
+  url: "/images/og-cover.jpg",
+  width: 1200,
+  height: 630,
+  alt: "The Byayamshala — gym, personal training and online coaching in Itahari, Nepal",
+};
+
+/** Browser UI colour on mobile (address bar), matching the dark hero and header. */
+export const viewport: Viewport = {
+  themeColor: "#0b0b0c",
+  colorScheme: "light",
 };
 
 export const metadata: Metadata = {
@@ -47,7 +56,13 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [shareImage.url],
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
+  formatDetection: { telephone: true, email: true, address: true },
+  category: "fitness",
 };
 
 /** Local business details so search engines can show the gym's address, phone and hours. */
@@ -70,7 +85,16 @@ const gymJsonLd = {
     addressRegion: siteConfig.address.region,
     addressCountry: siteConfig.address.country,
   },
+  // Coordinates carried over from the previous site's structured data.
+  geo: { "@type": "GeoCoordinates", latitude: 26.66198539744463, longitude: 87.27014571350836 },
   hasMap: siteConfig.address.mapUrl,
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: `+${siteConfig.whatsapp.number}`,
+    contactType: "customer service",
+    availableLanguage: ["English", "Nepali"],
+  },
+  currenciesAccepted: "NPR",
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",
     dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
@@ -86,14 +110,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${jakarta.variable} ${roboto.variable} h-full antialiased`}
+      // The intro boot script sets data-intro before React hydrates.
+      suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
+        {/* Must run before the page paints: decides whether the opening intro plays. */}
+        <script dangerouslySetInnerHTML={{ __html: introBootScript }} />
+        {/* No JavaScript: never show the intro overlay. */}
+        <noscript>
+          <style>{`.intro-overlay{display:none!important}`}</style>
+        </noscript>
         <script
           type="application/ld+json"
           // Static site data — no user input reaches this string.
           dangerouslySetInnerHTML={{ __html: JSON.stringify(gymJsonLd) }}
         />
         <Providers>
+          <ScrollProgress />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
  * the viewport (a thin band at ~45% height), or null when none is.
  */
 export function useActiveSection(ids: string[]) {
-  const [active, setActive] = useState<string | null>(ids[0] ?? null);
+  const [active, setActive] = useState<string | null>(null);
   const key = ids.join(",");
 
   useEffect(() => {

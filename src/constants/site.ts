@@ -112,6 +112,7 @@ export const sectionNav: Record<string, string> = {
   experts: "About",
   faq: "About",
   pricing: "Pricing",
+  blogs: "Blogs",
 };
 
 export const footerColumns: { title: string; links: NavLink[] }[] = [

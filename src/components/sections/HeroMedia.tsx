@@ -1,10 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { getImageProps } from "next/image";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { HERO_PORTRAIT_QUERY, heroVideo } from "@/constants/site";
 import { cn } from "@/lib/utils";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 // Phones get a portrait cut with the subject already centred; the landscape cut
 // keeps its subjects on the right, so anchor it there on tablets.
@@ -15,7 +16,9 @@ const noopSubscribe = () => () => {};
 /** Data Saver (Chrome/Android) — skip the video entirely. */
 function prefersSavedData() {
   if (typeof navigator === "undefined") return false;
-  const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+  const connection = (
+    navigator as Navigator & { connection?: { saveData?: boolean } }
+  ).connection;
   return Boolean(connection?.saveData);
 }
 
@@ -25,11 +28,15 @@ function prefersSavedData() {
  * and Data Saver users; paused whenever the hero is off-screen or the tab is hidden.
  */
 export function HeroMedia() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   // Server snapshot is `false`, so hydration matches; the real value applies right after.
-  const saveData = useSyncExternalStore(noopSubscribe, prefersSavedData, () => false);
+  const saveData = useSyncExternalStore(
+    noopSubscribe,
+    prefersSavedData,
+    () => false,
+  );
   const showVideo = heroVideo.enabled && !reduceMotion && !saveData;
 
   useEffect(() => {
@@ -67,7 +74,12 @@ export function HeroMedia() {
   const common = { alt: "", sizes: "100vw", fetchPriority: "high" as const };
   const {
     props: { srcSet: portraitSrcSet },
-  } = getImageProps({ ...common, src: heroVideo.posterPortrait, width: 720, height: 1280 });
+  } = getImageProps({
+    ...common,
+    src: heroVideo.posterPortrait,
+    width: 720,
+    height: 1280,
+  });
   const { props: landscapeProps } = getImageProps({
     ...common,
     src: heroVideo.poster,
@@ -82,7 +94,10 @@ export function HeroMedia() {
         <img
           {...landscapeProps}
           alt=""
-          className={cn("absolute inset-0 size-full object-cover", objectPosition)}
+          className={cn(
+            "absolute inset-0 size-full object-cover",
+            objectPosition,
+          )}
         />
       </picture>
       {showVideo && (
@@ -98,7 +113,10 @@ export function HeroMedia() {
           initial={false}
           animate={{ opacity: playing ? 1 : 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className={cn("absolute inset-0 size-full object-cover", objectPosition)}
+          className={cn(
+            "absolute inset-0 size-full object-cover",
+            objectPosition,
+          )}
         >
           {heroVideo.sources.map((s) => (
             <source key={s.src} src={s.src} type={s.type} media={s.media} />

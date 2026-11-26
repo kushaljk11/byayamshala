@@ -1,8 +1,9 @@
 "use client";
 
 import { ReactLenis } from "lenis/react";
-import { MotionConfig, useReducedMotion } from "motion/react";
+import { MotionConfig } from "motion/react";
 import type { ReactNode } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
  * App-wide motion setup:
@@ -11,7 +12,7 @@ import type { ReactNode } from "react";
  *   off entirely for reduced-motion users.
  */
 export function Providers({ children }: { children: ReactNode }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
 
   return (
     <MotionConfig reducedMotion="user">
