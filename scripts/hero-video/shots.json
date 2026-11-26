@@ -1,0 +1,30 @@
+{
+  "_about": "Shot list for the Byayamshala hero background loop. Story: effort -> precision -> guidance -> strength, then back to effort. Every subject sits right of centre: the hero copy lives bottom-left. Generate each clip at 16:9 (1920x1080 preferred), no audio needed.",
+  "style": "Cinematic premium fitness commercial, shot on ARRI Alexa with a 50mm prime, shallow depth of field. Dark, modern, minimal training studio with charcoal walls and matte black equipment. Low-key natural light from large soft windows, plus subtle cool cyan-blue (#019EE1) practical accent lights in the background, softly out of focus. Realistic skin texture, natural sweat, natural colour grade with deep blacks and muted tones. Slow, smooth, controlled camera movement on a gimbal or slider. Real-time human motion, not slow-motion unless stated. Subject framed in the right half of the frame, the left third darker negative space. No text, no logos, no captions, no watermarks, no on-screen graphics.",
+  "shots": [
+    {
+      "id": "01-ropes",
+      "seconds": 5,
+      "role": "Effort (continuity with the current hero poster)",
+      "prompt": "A focused female athlete in black training wear performs controlled battle rope waves in a dark premium gym, ropes rippling rhythmically, determined expression, breath visible in her posture. Slow lateral slider move from left to right, eye-level. Subject on the right half of the frame, rope lines leading in from the lower left. Soft cyan-blue rim light outlining her shoulders."
+    },
+    {
+      "id": "02-grip",
+      "seconds": 5,
+      "role": "Precision / discipline",
+      "prompt": "Extreme close-up of an athlete's hands chalking up and then gripping a knurled steel barbell resting on the floor, chalk dust drifting through a soft beam of window light, knuckles tightening. Very slow push-in macro shot, shallow depth of field. Barbell plates out of focus on the right, faint cyan-blue light reflections on the steel."
+    },
+    {
+      "id": "03-coaching",
+      "seconds": 5,
+      "role": "Professional guidance (the core service)",
+      "prompt": "A professional personal trainer in a dark athletic t-shirt coaches a client through a controlled goblet squat, the trainer gesturing calmly to correct posture and giving an encouraging nod, the client focused and steady. Natural, warm human expressions. Slow gimbal arc around the pair, medium shot. Both subjects positioned in the right half of the frame, a dark gym wall on the left."
+    },
+    {
+      "id": "04-strength",
+      "seconds": 5,
+      "role": "Strength and confidence (payoff)",
+      "prompt": "A confident male athlete completes a heavy deadlift lockout, stands tall with the barbell, controlled exhale, then a subtle satisfied smile. Low-angle slow dolly push-in, subject on the right third of the frame. Soft overhead light and a cool cyan-blue background practical light, deep shadows on the left side of the frame."
+    }
+  ]
+}

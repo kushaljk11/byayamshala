@@ -1,20 +1,31 @@
-import { Badge, Button, Container, Heading, Section, Text } from "@/components/ui";
+import { ScrollTextBand } from "@/components/motion/ScrollTextBand";
+import { AppCta } from "@/components/sections/AppCta";
+import { Experts } from "@/components/sections/Experts";
+import { Explore } from "@/components/sections/Explore";
+import { Faq } from "@/components/sections/Faq";
+import { Features } from "@/components/sections/Features";
+import { Hero } from "@/components/sections/Hero";
+import { Journey } from "@/components/sections/Journey";
+import { Pricing } from "@/components/sections/Pricing";
+import { Programs } from "@/components/sections/Programs";
+import { Stats } from "@/components/sections/Stats";
+import { Testimonials } from "@/components/sections/Testimonials";
 
 export default function HomePage() {
   return (
-    <Section>
-      <Container className="flex flex-col items-start gap-6">
-        <Badge>Setup complete</Badge>
-        <Heading as="h1">Byamshala</Heading>
-        <Text size="lg" muted className="max-w-2xl">
-          Next.js + TypeScript + Tailwind CSS. Pages will be built from the
-          Figma frames using the reusable components in src/components/ui.
-        </Text>
-        <div className="flex gap-3">
-          <Button>Primary</Button>
-          <Button variant="outline">Outline</Button>
-        </div>
-      </Container>
-    </Section>
+    <>
+      <Hero />
+      <Journey />
+      <Stats />
+      <ScrollTextBand text="Your Personal Fitness Team — Wherever You Are" />
+      <Features />
+      <Programs />
+      <Explore />
+      <Pricing />
+      <Testimonials />
+      <Experts />
+      <Faq />
+      <AppCta />
+    </>
   );
 }
